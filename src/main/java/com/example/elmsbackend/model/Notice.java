@@ -8,20 +8,20 @@ public class Notice {
 
     @Id
     private String noticeId;
-    private String subject;
-    private String grade;
-    private String topic;
-    private String body;
+    private String noticeSubject;
+    private String noticeGrade;
+    private String noticeTopic;
+    private String noticeBody;
 
     public Notice() {
     }
 
-    public Notice(String noticeId, String subject, String grade, String topic, String body) {
+    public Notice(String noticeId, String noticeSubject, String noticeGrade, String noticeTopic, String noticeBody) {
         this.noticeId = noticeId;
-        this.subject = subject;
-        this.grade = grade;
-        this.topic = topic;
-        this.body = body;
+        this.noticeSubject = noticeSubject;
+        this.noticeGrade = noticeGrade;
+        this.noticeTopic = noticeTopic;
+        this.noticeBody = noticeBody;
     }
 
     public String getNoticeId() {
@@ -32,35 +32,35 @@ public class Notice {
         this.noticeId = noticeId;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getNoticeSubject() {
+        return noticeSubject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setNoticeSubject(String noticeSubject) {
+        this.noticeSubject = noticeSubject;
     }
 
-    public String getGrade() {
-        return grade;
+    public String getNoticeGrade() {
+        return noticeGrade;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setNoticeGrade(String noticeGrade) {
+        this.noticeGrade = noticeGrade;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getNoticeTopic() {
+        return noticeTopic;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setNoticeTopic(String noticeTopic) {
+        this.noticeTopic = noticeTopic;
     }
 
-    public String getBody() {
-        return body;
+    public String getNoticeBody() {
+        return noticeBody;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setNoticeBody(String noticeBody) {
+        this.noticeBody = noticeBody;
     }
 }
