@@ -44,6 +44,19 @@ public class LibraryController {
         return new ResponseEntity<>(repository.findById(id), HttpStatus.OK);
     }
 
+//    @GetMapping("/download/{id}")
+//    public ResponseEntity<ByteArrayResource> downloadTemplate(@PathVariable String id) throws IOException {
+//        byte[] template = service.downloadTemplate(id);
+//
+//        //get filename and content type
+//        HashMap<String, String> templateFile = service.getDetailsOfFile(id);
+//
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(templateFile.get("contentType")))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + templateFile.get("filename") + "\"")
+//                .body(new ByteArrayResource(template));
+//    }
+
 
     // update a resource
     @PutMapping("/edit")
