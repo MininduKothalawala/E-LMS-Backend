@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClassroomService {
@@ -89,7 +91,7 @@ public class ClassroomService {
 //    }
 
     public Classroom addClassroom(String grade, String subject, String topic, String description, String date, String time, String link, String addedBy,
-                            MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
+                                  MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
 
         /*
          * Store the file in the Gridfs and return its object ID
@@ -236,5 +238,13 @@ public class ClassroomService {
 
         return id;
 
+    }
+
+    public List<Classroom> getClassroomByGrade(String status) {
+        return classroomRepository.findByGrade(status);
+    }
+
+    public Optional<Classroom> getClassroomById(String id){
+        return classroomRepository.findById(id);
     }
 }
