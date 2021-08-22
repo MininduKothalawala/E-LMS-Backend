@@ -3,7 +3,7 @@ package com.example.elmsbackend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document("Notice")
 public class Notice {
 
     @Id
