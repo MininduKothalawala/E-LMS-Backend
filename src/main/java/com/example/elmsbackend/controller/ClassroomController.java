@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/classroom")
 public class ClassroomController {
 
@@ -27,8 +27,8 @@ public class ClassroomController {
 
     @PostMapping("/addClassroom")
     public ResponseEntity<?> addClassroom( @RequestParam("grade") String grade, @RequestParam("subject") String subject, @RequestParam("topic") String topic,
-                                          @RequestParam("description") String description, @RequestParam("date") String date, @RequestParam("time") String time, @RequestParam("link") String link,
-                                          @RequestParam("addedBy") String addedBy, @RequestParam("lecFile") MultipartFile lecFile, @RequestParam("tuteFile") MultipartFile tuteFile, @RequestParam("classImg") MultipartFile classImg) throws IOException {
+                                           @RequestParam("description") String description, @RequestParam("date") String date, @RequestParam("time") String time, @RequestParam("link") String link,
+                                           @RequestParam("addedBy") String addedBy, @RequestParam("lecFile") MultipartFile lecFile, @RequestParam("tuteFile") MultipartFile tuteFile, @RequestParam("classImg") MultipartFile classImg) throws IOException {
         classroomService.addClassroom(grade,subject,topic,description,date,time,link,addedBy,lecFile,tuteFile,classImg);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -44,9 +44,14 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getClassroom(@PathVariable String id) {
-        return new ResponseEntity<>(classroomRepository.findById(id), HttpStatus.OK);
+    @GetMapping("/getbyid/{id}")
+    public ResponseEntity<?> getClassroomById(@PathVariable String id) {
+        return ResponseEntity.ok(classroomRepository.findById(id));
+    }
+
+    @GetMapping("/getbygrade/{grade}")
+    public ResponseEntity<?> getClassroomByGrade(@PathVariable String grade) {
+        return new ResponseEntity<>(classroomService.getClassroomByGrade(grade), HttpStatus.OK);
     }
 
     @PutMapping("/")
@@ -60,6 +65,5 @@ public class ClassroomController {
     public ResponseEntity<?> deleteClassroom(@PathVariable String id) {
         return ResponseEntity.ok(classroomService.deleteClassroom(id));
     }
-
 
 }
