@@ -4,6 +4,7 @@ import com.example.elmsbackend.model.Subject;
 import com.example.elmsbackend.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,5 +24,18 @@ public class SubjectService {
     //get all subjects
     public List<Subject> getAllSubjects(){
         return subjectRepository.findAll();
+    }
+
+    //get subjects list according to the grade
+    public List<String> getSubjectsByGrade(String grade){
+        List<Subject> grades = subjectRepository.findAll();
+        List<String> subjects = new ArrayList<>();
+
+        for (Subject item: grades){
+            if(item.getGrade().equals(grade)){
+                subjects = item.getSubjects();
+            }
+        }
+        return subjects;
     }
 }

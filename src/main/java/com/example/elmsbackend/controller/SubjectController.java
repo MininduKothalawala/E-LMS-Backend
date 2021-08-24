@@ -43,4 +43,15 @@ public class SubjectController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{grade}")
+    public ResponseEntity<?> getSubjectsByGrade(@PathVariable String grade){
+        try {
+            List<String> subjects = subjectService.getSubjectsByGrade(grade);
+            return new ResponseEntity<>(subjects, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
