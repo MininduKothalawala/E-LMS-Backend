@@ -3,22 +3,22 @@ package com.example.elmsbackend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("AdminUser")
-public class AdminUser {
+@Document("User")
+public class User {
 
     @Id
-    private String username;
+    private String indexno;
     private String password;
     private String name;
     private String mobileNo;
     private String email;
     private String role;
 
-    public AdminUser() {
+    public User() {
     }
 
-    public AdminUser(String username, String password, String name, String mobileNo, String email, String role) {
-        this.username = username;
+    public User(String indexno, String password, String name, String mobileNo, String email, String role) {
+        this.indexno = indexno;
         this.password = password;
         this.name = name;
         this.mobileNo = mobileNo;
@@ -26,12 +26,12 @@ public class AdminUser {
         this.role = role;
     }
 
-    public String getUsername() {
-        return username;
+    public String getIndexno() {
+        return indexno;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setIndexno(String indexno) {
+        this.indexno = indexno;
     }
 
     public String getPassword() {

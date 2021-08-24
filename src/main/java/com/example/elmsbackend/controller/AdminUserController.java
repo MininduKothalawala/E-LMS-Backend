@@ -1,7 +1,7 @@
 package com.example.elmsbackend.controller;
 
 
-import com.example.elmsbackend.model.AdminUser;
+import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
 import com.example.elmsbackend.services.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,14 @@ public class AdminUserController {
     }
 
     @PostMapping("/addadminuser")
-    public ResponseEntity<?> addAdminUser(@RequestBody AdminUser adminUser){
-        System.out.println("adduser"+adminUser.getName());
-        adminUserService.addAdminUser(adminUser);
+    public ResponseEntity<?> addAdminUser(@RequestBody User user){
+        System.out.println("adduser"+ user.getName());
+        adminUserService.addAdminUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/alladmin")
-    public ResponseEntity<List<AdminUser>> getAllAdminUsers(){
+    public ResponseEntity<List<User>> getAllAdminUsers(){
         return ResponseEntity.ok(adminUserService.getAllAdminUsers());
     }
 
