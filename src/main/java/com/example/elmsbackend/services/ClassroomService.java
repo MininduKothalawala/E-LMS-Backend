@@ -5,6 +5,8 @@ import com.example.elmsbackend.model.Library;
 import com.example.elmsbackend.repository.ClassroomRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClassroomService {
@@ -89,7 +94,7 @@ public class ClassroomService {
 //    }
 
     public Classroom addClassroom(String grade, String subject, String topic, String description, String date, String time, String link, String addedBy,
-                            MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
+                                  MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
 
         /*
          * Store the file in the Gridfs and return its object ID
@@ -237,4 +242,89 @@ public class ClassroomService {
         return id;
 
     }
+
+    public List<Classroom> getClassroomByGrade(String status) {
+        return classroomRepository.findByGrade(status);
+    }
+
+    public Optional<Classroom> getClassroomById(String id){
+        return classroomRepository.findById(id);
+    }
+
+    //download template file
+    public byte[] downloadLecture(String lec_fileId) throws IOException {
+
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(lec_fileId)));
+
+        //setting data to byte array
+        byte[] file = new byte[0];
+
+        if (gridFSFile != null) {
+            file = IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream());
+        }
+
+        return file;
+    }
+
+    //sending filename and content type through hashmap <- part of DOWNLOAD process
+    public HashMap<String, String> getDetailsOfLecture(String id) {
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+
+        HashMap<String, String> lecture = new HashMap<>();
+
+        if (gridFSFile != null && gridFSFile.getMetadata() != null) {
+            //template.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            lecture.put("filename", gridFSFile.getFilename());
+        }
+
+        return lecture;
+    }
+
+    public byte[] downloadTute(String tute_fileId) throws IOException {
+
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(tute_fileId)));
+
+        //setting data to byte array
+        byte[] file = new byte[0];
+
+        if (gridFSFile != null) {
+            file = IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream());
+        }
+
+        return file;
+    }
+
+    //sending filename and content type through hashmap <- part of DOWNLOAD process
+    public HashMap<String, String> getDetailsOfTute(String id) {
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+
+        HashMap<String, String> tute = new HashMap<>();
+
+        if (gridFSFile != null && gridFSFile.getMetadata() != null) {
+            tute.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            tute.put("filename", gridFSFile.getFilename());
+        }
+
+        return tute;
+    }
+
+    public HashMap<String, String> getDetailsOfImage(String id) {
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+
+        HashMap<String, String> image = new HashMap<>();
+
+        if (gridFSFile != null && gridFSFile.getMetadata() != null) {
+            image.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            image.put("filename", gridFSFile.getFilename());
+        }
+
+        return image;
+    }
+
+
 }

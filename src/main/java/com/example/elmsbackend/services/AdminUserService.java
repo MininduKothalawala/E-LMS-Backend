@@ -1,7 +1,7 @@
 package com.example.elmsbackend.services;
 
 
-import com.example.elmsbackend.model.AdminUser;
+import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +17,21 @@ public class AdminUserService {
         this.adminUserRepository = adminUserRepository;
     }
 
-    public void addAdminUser(AdminUser adminUser){
-        adminUserRepository.insert(adminUser);
+    public void addAdminUser(User user){
+        adminUserRepository.insert(user);
     }
 
-    public List<AdminUser> getAllAdminUsers(){
-        List <AdminUser> adminUsers = adminUserRepository.findAll();
-        System.out.println("admin user from db ::"+adminUsers);
-        return adminUsers;
+    public List<User> getAllAdminUsers(){
+        List <User> users = adminUserRepository.findAll();
+        System.out.println("admin user from db ::"+ users);
+        return users;
     }
 
     public void deleteAdminUser(String id){
         adminUserRepository.deleteById(id);
     }
 
-    public Optional<AdminUser> getAdminByUsername(String username){
+    public Optional<User> getAdminByUsername(String username){
         return adminUserRepository.findById(username);
     }
 
