@@ -53,6 +53,26 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/grade/{grade}")
+    public ResponseEntity<?> getNoticesByGrade(@PathVariable String grade){
+        try {
+            return new ResponseEntity<>(noticeService.getNoticesByGrade(grade), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/subject/{subject}")
+    public ResponseEntity<?> getNoticesBySubject(@PathVariable String subject){
+        try {
+            return new ResponseEntity<>(noticeService.getNoticesBySubject(subject), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteNotice(@PathVariable String id){
         try {
@@ -61,6 +81,17 @@ public class NoticeController {
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> updateNotice(@RequestBody Notice notice){
+        try {
+            noticeService.updateNotice(notice);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
