@@ -2,6 +2,8 @@ package com.example.elmsbackend.services;
 
 import com.example.elmsbackend.model.Library;
 import com.example.elmsbackend.repository.LibraryRepository;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @Service
 public class LibraryService {
@@ -128,5 +131,35 @@ public class LibraryService {
 
         return id;
 
+    }
+
+    public byte[] downloadResource(String fileId) throws IOException {
+
+        //find file from DB
+        GridFSFile gridFSFile = template.findOne(new Query(Criteria.where("_id").is(fileId)));
+
+        //setting data to byte array
+        byte[] file = new byte[0];
+
+        if (gridFSFile != null) {
+            file = IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream());
+        }
+
+        return file;
+    }
+
+    //sending filename and content type through hashmap <- part of DOWNLOAD process
+    public HashMap<String, String> getDetailsOfResource(String id) {
+        //find file from DB
+        GridFSFile gridFSFile = template.findOne(new Query(Criteria.where("_id").is(id)));
+
+        HashMap<String, String> resource = new HashMap<>();
+
+        if (gridFSFile != null && gridFSFile.getMetadata() != null) {
+            resource.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            resource.put("filename", gridFSFile.getFilename());
+        }
+
+        return resource;
     }
 }
