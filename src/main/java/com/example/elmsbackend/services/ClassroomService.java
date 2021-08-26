@@ -1,10 +1,7 @@
 package com.example.elmsbackend.services;
 
 import com.example.elmsbackend.model.Classroom;
-import com.example.elmsbackend.model.Library;
 import com.example.elmsbackend.repository.ClassroomRepository;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -310,6 +306,21 @@ public class ClassroomService {
         }
 
         return tute;
+    }
+
+    public byte[] downloadImage(String img_fileId) throws IOException {
+
+        //find file from DB
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(img_fileId)));
+
+        //setting data to byte array
+        byte[] file = new byte[0];
+
+        if (gridFSFile != null) {
+            file = IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream());
+        }
+
+        return file;
     }
 
     public HashMap<String, String> getDetailsOfImage(String id) {
