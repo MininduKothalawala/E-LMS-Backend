@@ -74,4 +74,17 @@ public class LibraryController {
     public ResponseEntity<?> deleteResource(@PathVariable String id) {
         return ResponseEntity.ok(service.deleteResource(id));
     }
+
+    @GetMapping("/downloadResource/{id}")
+    public ResponseEntity<ByteArrayResource> downloadLecture(@PathVariable String id) throws IOException {
+        byte[] resource = service.downloadResource(id);
+
+        //get filename and content type
+        HashMap<String, String> res = service.getDetailsOfResource(id);
+
+        return ResponseEntity.ok()
+
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + res.get("filename") + "\"")
+                .body(new ByteArrayResource(resource));
+    }
 }
