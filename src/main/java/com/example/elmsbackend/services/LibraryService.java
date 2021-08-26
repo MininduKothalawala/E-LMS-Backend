@@ -2,6 +2,8 @@ package com.example.elmsbackend.services;
 
 import com.example.elmsbackend.model.Library;
 import com.example.elmsbackend.repository.LibraryRepository;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
 
 @Service
 public class LibraryService {
@@ -43,9 +47,9 @@ public class LibraryService {
          * and return the list to the frontend
          */
         Library library = new Library();
-        library.setResourceType(resourceType);
+        library.setResourceType(resourceType.toUpperCase(Locale.ROOT));
         library.setGrade(grade);
-        library.setSubject(subject);
+        library.setSubject(subject.toUpperCase(Locale.ROOT));
         library.setFileId(fileId.toString());
         library.setFileName(file.getOriginalFilename());
 
@@ -79,9 +83,9 @@ public class LibraryService {
 
                 Object fileId = template.store(file.getInputStream(),file.getOriginalFilename(), file.getContentType());
 
-                updatedResource.setResourceType(resourceType);
+                updatedResource.setResourceType(resourceType.toUpperCase(Locale.ROOT));
                 updatedResource.setGrade(grade);
-                updatedResource.setSubject(subject);
+                updatedResource.setSubject(subject.toUpperCase(Locale.ROOT));
                 updatedResource.setFileId(fileId.toString());
                 updatedResource.setFileName(file.getOriginalFilename());
 
@@ -128,5 +132,34 @@ public class LibraryService {
 
         return id;
 
+    }
+    //download template file
+    public byte[] downloadFile(String tempFileID) throws IOException {
+
+        //find file from DB
+        GridFSFile gridFSFile = template.findOne(new Query(Criteria.where("_id").is(tempFileID)));
+
+        //setting data to byte array
+        byte[] file = new byte[0];
+
+        if (gridFSFile != null) {
+            file = IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream());
+        }
+
+        return file;
+    }
+
+    public HashMap<String, String> getDetailsOfFile(String id) {
+        //find file from DB
+        GridFSFile gridFSFile = template.findOne(new Query(Criteria.where("_id").is(id)));
+
+        HashMap<String, String> template = new HashMap<>();
+
+        if (gridFSFile != null && gridFSFile.getMetadata() != null) {
+            template.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            template.put("filename", gridFSFile.getFilename());
+        }
+
+        return template;
     }
 }
