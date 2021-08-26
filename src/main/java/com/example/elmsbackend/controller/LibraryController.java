@@ -3,12 +3,15 @@ package com.example.elmsbackend.controller;
 import com.example.elmsbackend.repository.LibraryRepository;
 import com.example.elmsbackend.services.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -56,5 +59,18 @@ public class LibraryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResource(@PathVariable String id) {
         return ResponseEntity.ok(service.deleteResource(id));
+    }
+
+    @GetMapping("/downloadResource/{id}")
+    public ResponseEntity<ByteArrayResource> downloadLecture(@PathVariable String id) throws IOException {
+        byte[] resource = service.downloadResource(id);
+
+        //get filename and content type
+        HashMap<String, String> res = service.getDetailsOfResource(id);
+
+        return ResponseEntity.ok()
+
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + res.get("filename") + "\"")
+                .body(new ByteArrayResource(resource));
     }
 }
