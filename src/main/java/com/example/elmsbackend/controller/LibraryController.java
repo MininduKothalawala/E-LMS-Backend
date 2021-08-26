@@ -3,12 +3,16 @@ package com.example.elmsbackend.controller;
 import com.example.elmsbackend.repository.LibraryRepository;
 import com.example.elmsbackend.services.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -44,18 +48,18 @@ public class LibraryController {
         return new ResponseEntity<>(repository.findById(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/download/{id}")
-//    public ResponseEntity<ByteArrayResource> downloadTemplate(@PathVariable String id) throws IOException {
-//        byte[] template = service.downloadTemplate(id);
-//
-//        //get filename and content type
-//        HashMap<String, String> templateFile = service.getDetailsOfFile(id);
-//
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType(templateFile.get("contentType")))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + templateFile.get("filename") + "\"")
-//                .body(new ByteArrayResource(template));
-//    }
+    @GetMapping("/download/{id}")
+    public ResponseEntity<ByteArrayResource> downloadTemplate(@PathVariable String id) throws IOException {
+        byte[] file = service.downloadFile(id);
+
+        //get filename and content type
+        HashMap<String, String> details = service.getDetailsOfFile(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(details.get("contentType")))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + details.get("filename") + "\"")
+                .body(new ByteArrayResource(file));
+    }
 
 
     // update a resource
