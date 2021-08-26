@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -72,6 +73,12 @@ public class LibraryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResource(@PathVariable String id) {
         return ResponseEntity.ok(service.deleteResource(id));
+    }
+
+    //filter resource by type
+    @GetMapping("/filter/{type}")
+    public ResponseEntity<?> getFilteredLibraries(@PathVariable String type) {
+        return new ResponseEntity<>(repository.findLibraryByResourceType(type.toUpperCase(Locale.ROOT)), HttpStatus.OK);
     }
 
 }
