@@ -98,16 +98,14 @@ public class ClassroomController {
 
     @GetMapping("/image/{id}")
     public ResponseEntity<?> getImage(@PathVariable String id) throws IOException {
-        // byte[] tutorial = classroomService.downloadTute(id);
-
-        return ResponseEntity.ok(classroomService.getDetailsOfImage(id));
+         byte[] image = classroomService.downloadImage(id);
 
         //get filename and content type
-//        HashMap<String, String> tute = classroomService.getDetailsOfTute(id);
-//
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType(tute.get("contentType")))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + tute.get("filename") + "\"")
-//                .body(new ByteArrayResource(tute));
+        HashMap<String, String> imgData = classroomService.getDetailsOfImage(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(imgData.get("contentType")))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imgData.get("filename") + "\"")
+                .body(new ByteArrayResource(image));
     }
 }
