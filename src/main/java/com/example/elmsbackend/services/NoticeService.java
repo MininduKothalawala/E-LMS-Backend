@@ -71,5 +71,11 @@ public class NoticeService {
         return finalList;
     }
 
-
+    //create notice ID
+    public String createNoticeId(){
+        List<Notice> notices = getAllNotices();
+        int size = notices.size()+1;
+        String noticeId = "NO" + size;
+        return noticeId;
+    }
 }

@@ -73,6 +73,16 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<?> createNoticeId(){
+        try{
+            return new ResponseEntity<>(noticeService.createNoticeId(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteNotice(@PathVariable String id){
         try {
