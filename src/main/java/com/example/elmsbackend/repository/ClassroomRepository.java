@@ -14,4 +14,10 @@ public interface ClassroomRepository extends MongoRepository<Classroom, String> 
 
     List<Classroom> findByGrade (String grade);
 
+    List<Classroom> findBySubject (String subject);
+
+    List<Classroom> findByTopic (String topic);
+
+//    List<Classroom> findByAdded (String addedBy);
+
 }
