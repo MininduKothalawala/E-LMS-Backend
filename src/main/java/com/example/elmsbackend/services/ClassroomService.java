@@ -243,6 +243,20 @@ public class ClassroomService {
         return classroomRepository.findByGrade(status);
     }
 
+    public List<Classroom> getClassroomBySubject(String subject) {
+        return classroomRepository.findBySubject(subject);
+    }
+
+    public List<Classroom> getClassroomByTopic(String topic) {
+        return classroomRepository.findByTopic(topic);
+    }
+
+
+
+//    public List<Classroom> getClassroomByAddedBy(String addedBy) {
+//        return classroomRepository.findByAdded(addedBy);
+//    }
+
     public Optional<Classroom> getClassroomById(String id){
         return classroomRepository.findById(id);
     }
@@ -335,6 +349,66 @@ public class ClassroomService {
         }
 
         return image;
+    }
+
+    public String updateWithLec(String id,String grade, String subject, String topic, String description, String date, String time, String link, String addedBy,
+                                MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
+        //find and delete existing file from gridFs
+        Classroom classroom = classroomRepository.findClassroomById(id);
+        String LecFileId = deleteTemplate(classroom.getLec_fileId());
+        String TutteFileId = deleteTemplate(classroom.getTute_fileId());
+        String imgFileId = deleteTemplate(classroom.getImg_fileId());
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+        if (LecFileId != null && imgFileId != null && TutteFileId != null) {
+//            //if file is deleted then insert new file
+            List<String> idList = (List<String>) addClassroom(grade,subject,topic,description,date,time,link,addedBy,lecFile,tuteFile,classImg);
+
+            classroom.setGrade(grade);
+            classroom.setSubject(subject);
+            classroom.setTopic(topic);
+            classroom.setDescription(description);
+            classroom.setDate(date);
+            classroom.setTime(time);
+            classroom.setLink(link);
+            classroom.setAddedBy(addedBy);
+            classroom.setLec_fileId(idList.get(0));
+            classroom.setLec_filename(lecFile.getOriginalFilename());
+            classroom.setTute_fileId(idList.get(1));
+            classroom.setTute_filename(tuteFile.getOriginalFilename());
+            classroom.setImg_fileId(idList.get(1));
+            classroom.setImg_filename(classImg.getOriginalFilename());
+
+            classroomRepository.save(classroom);
+        }
+
+        return id;
+    }
+
+    public String deleteTemplate(String id) {
+
+        //delete File from DB
+        gridFsTemplate.delete(Query.query(Criteria.where("_id").is(id)));
+        return id;
+    }
+
+    //update without files
+    public String updateWithoutFiles(String id,String grade, String subject, String topic, String description, String date, String time, String link, String addedBy) {
+        //find query
+        Classroom classroom = classroomRepository.findClassroomById(id);
+        classroom.setGrade(grade);
+        classroom.setSubject(subject);
+        classroom.setTopic(topic);
+        classroom.setDescription(description);
+        classroom.setDate(date);
+        classroom.setTime(time);
+        classroom.setLink(link);
+        classroom.setAddedBy(addedBy);
+
+        classroomRepository.save(classroom);
+
+        return id;
     }
 
 

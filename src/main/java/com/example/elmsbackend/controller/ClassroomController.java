@@ -58,6 +58,22 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomService.getClassroomByGrade(grade), HttpStatus.OK);
     }
 
+    @GetMapping("/getbysubject/{subject}")
+    public ResponseEntity<?> getClassroomBySubject(@PathVariable String subject) {
+        return new ResponseEntity<>(classroomService.getClassroomBySubject(subject), HttpStatus.OK);
+    }
+
+    @GetMapping("/getbytopic/{topic}")
+    public ResponseEntity<?> getClassroomByTopic(@PathVariable String topic) {
+        return new ResponseEntity<>(classroomService.getClassroomByTopic(topic), HttpStatus.OK);
+    }
+
+    //
+//    @GetMapping("/getbyaddedBy/{addedBy}")
+//    public ResponseEntity<?> getClassroomByAddedBy(@PathVariable String addedBy) {
+//        return new ResponseEntity<>(classroomService.getClassroomByAddedBy(addedBy), HttpStatus.OK);
+//    }
+
     @PutMapping("/")
     public ResponseEntity<?> updateClassroom(@RequestParam("id") String id, @RequestParam("grade") String grade, @RequestParam("subject") String subject, @RequestParam("topic") String topic,
                                              @RequestParam("description") String description, @RequestParam("date") String date, @RequestParam("time") String time, @RequestParam("link") String link,
@@ -107,5 +123,24 @@ public class ClassroomController {
                 .contentType(MediaType.parseMediaType(imgData.get("contentType")))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imgData.get("filename") + "\"")
                 .body(new ByteArrayResource(image));
+    }
+
+    //update all
+    @PutMapping("/updatewithFile")
+    public ResponseEntity<?> updateClassroomWithFile(@RequestParam("id") String id, @RequestParam("grade") String grade, @RequestParam("subject") String subject, @RequestParam("topic") String topic,
+                                                     @RequestParam("description") String description, @RequestParam("date") String date, @RequestParam("time") String time, @RequestParam("link") String link,
+                                                     @RequestParam("addedBy") String addedBy, @RequestParam("lecFile") MultipartFile lecFile, @RequestParam("tuteFile") MultipartFile tuteFile, @RequestParam("classImg") MultipartFile classImg) throws IOException {
+
+        String res = classroomService.updateWithLec(id, grade, subject, topic, description, date,time,link,addedBy,lecFile,tuteFile,classImg);
+        return ResponseEntity.ok(res);
+    }
+
+    //update without files
+    @PutMapping("/updatewithoutFiles")
+    public ResponseEntity<?> updateWithoutFiles(@RequestParam("id") String id, @RequestParam("grade") String grade, @RequestParam("subject") String subject, @RequestParam("topic") String topic,
+                                                @RequestParam("description") String description, @RequestParam("date") String date, @RequestParam("time") String time, @RequestParam("link") String link,
+                                                @RequestParam("addedBy") String addedBy) {
+        String res = classroomService.updateWithoutFiles(id, grade, subject, topic, description, date,time,link,addedBy);
+        return ResponseEntity.ok(res);
     }
 }
