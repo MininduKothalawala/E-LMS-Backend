@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -61,7 +62,6 @@ public class LibraryController {
                 .body(new ByteArrayResource(file));
     }
 
-
     // update a resource
     @PutMapping("/edit")
     public ResponseEntity<?> updateResource(@RequestParam("id") String id, @RequestParam("resourceType") String resourceType, @RequestParam("grade") String grade, @RequestParam("subject") String subject,
@@ -75,6 +75,7 @@ public class LibraryController {
         return ResponseEntity.ok(service.deleteResource(id));
     }
 
+
 //    @GetMapping("/downloadResource/{id}")
 //    public ResponseEntity<ByteArrayResource> downloadLecture(@PathVariable String id) throws IOException {
 //        byte[] resource = service.downloadResource(id);
@@ -87,4 +88,11 @@ public class LibraryController {
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + res.get("filename") + "\"")
 //                .body(new ByteArrayResource(resource));
 //    }
+
+    //filter resource by type
+    @GetMapping("/filter/{type}")
+    public ResponseEntity<?> getFilteredLibraries(@PathVariable String type) {
+        return new ResponseEntity<>(repository.findLibraryByResourceType(type.toUpperCase(Locale.ROOT)), HttpStatus.OK);
+    }
+
 }

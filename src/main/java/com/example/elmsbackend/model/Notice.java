@@ -12,16 +12,18 @@ public class Notice {
     private String noticeGrade;
     private String noticeTopic;
     private String noticeBody;
+    private String enteredTime;
 
     public Notice() {
     }
 
-    public Notice(String noticeId, String noticeSubject, String noticeGrade, String noticeTopic, String noticeBody) {
+    public Notice(String noticeId, String noticeSubject, String noticeGrade, String noticeTopic, String noticeBody, String enteredTime) {
         this.noticeId = noticeId;
         this.noticeSubject = noticeSubject;
         this.noticeGrade = noticeGrade;
         this.noticeTopic = noticeTopic;
         this.noticeBody = noticeBody;
+        this.enteredTime = enteredTime;
     }
 
     public String getNoticeId() {
@@ -62,5 +64,13 @@ public class Notice {
 
     public void setNoticeBody(String noticeBody) {
         this.noticeBody = noticeBody;
+    }
+
+    public String getEnteredTime() {
+        return enteredTime;
+    }
+
+    public void setEnteredTime(String enteredTime) {
+        this.enteredTime = enteredTime;
     }
 }
