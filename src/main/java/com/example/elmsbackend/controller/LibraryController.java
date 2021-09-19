@@ -81,4 +81,10 @@ public class LibraryController {
         return new ResponseEntity<>(repository.findLibraryByResourceType(type.toUpperCase(Locale.ROOT)), HttpStatus.OK);
     }
 
+    //search resource
+    @GetMapping("/search/{text}")
+    public ResponseEntity<?> getSearchedLibraries(@PathVariable String text) {
+        return new ResponseEntity<>(repository.findLibraryResource(text), HttpStatus.OK);
+    }
+
 }
