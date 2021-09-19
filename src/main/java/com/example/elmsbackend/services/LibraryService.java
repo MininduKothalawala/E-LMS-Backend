@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 
 @Service
 public class LibraryService {
@@ -47,9 +46,9 @@ public class LibraryService {
          * and return the list to the frontend
          */
         Library library = new Library();
-        library.setResourceType(resourceType.toUpperCase(Locale.ROOT));
+        library.setResourceType(resourceType);
         library.setGrade(grade);
-        library.setSubject(subject.toUpperCase(Locale.ROOT));
+        library.setSubject(subject);
         library.setFileId(fileId.toString());
         library.setFileName(file.getOriginalFilename());
 
@@ -83,9 +82,9 @@ public class LibraryService {
 
                 Object fileId = template.store(file.getInputStream(),file.getOriginalFilename(), file.getContentType());
 
-                updatedResource.setResourceType(resourceType.toUpperCase(Locale.ROOT));
+                updatedResource.setResourceType(resourceType);
                 updatedResource.setGrade(grade);
-                updatedResource.setSubject(subject.toUpperCase(Locale.ROOT));
+                updatedResource.setSubject(subject);
                 updatedResource.setFileId(fileId.toString());
                 updatedResource.setFileName(file.getOriginalFilename());
 
