@@ -16,4 +16,7 @@ public interface LibraryRepository extends MongoRepository<Library, String> {
 
     @Query("{ $or :[ { grade: { $regex : ?0 , $options: 'i' } }, { subject: { $regex : ?0 , $options: 'i' } }, { fileName: { $regex : ?0 , $options: 'i' } } ] }")
     List<Library> findLibraryResource(String search);
+
+    // find resource by grade and subject
+    List<Library> findLibraryByGradeAndSubject(String grade, String subject);
 }
