@@ -74,24 +74,16 @@ public class LibraryController {
         return ResponseEntity.ok(service.deleteResource(id));
     }
 
-
-//    @GetMapping("/downloadResource/{id}")
-//    public ResponseEntity<ByteArrayResource> downloadLecture(@PathVariable String id) throws IOException {
-//        byte[] resource = service.downloadResource(id);
-//
-//        //get filename and content type
-//        HashMap<String, String> res = service.getDetailsOfResource(id);
-//
-//        return ResponseEntity.ok()
-//
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + res.get("filename") + "\"")
-//                .body(new ByteArrayResource(resource));
-//    }
-
     //filter resource by type
     @GetMapping("/filter/{type}")
     public ResponseEntity<?> getFilteredLibraries(@PathVariable String type) {
         return new ResponseEntity<>(repository.findLibraryByResourceType(type), HttpStatus.OK);
+    }
+
+    //filter resource by subject according to grade
+    @GetMapping("/filter/lib/{grade}/{subject}")
+    public ResponseEntity<?> filterLibrariesBySubject(@PathVariable String grade, @PathVariable String subject) {
+        return new ResponseEntity<>(repository.findLibraryByGradeAndSubject(grade, subject), HttpStatus.OK);
     }
 
     //search resource
