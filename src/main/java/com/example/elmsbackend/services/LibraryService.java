@@ -51,6 +51,7 @@ public class LibraryService {
         library.setSubject(subject);
         library.setFileId(fileId.toString());
         library.setFileName(file.getOriginalFilename());
+        library.setDateAdded(java.time.LocalDate.now().toString());
 
         repository.save(library);
 

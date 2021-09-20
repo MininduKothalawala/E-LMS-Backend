@@ -12,17 +12,18 @@ public class Library {
     private String subject;
     private String fileId;
     private String fileName;
+    private String dateAdded;
 
     public Library() {
     }
 
-    public Library(String id, String resourceType, String grade, String subject, String fileId, String fileName) {
-        this.id = id;
+    public Library(String resourceType, String grade, String subject, String fileId, String fileName, String dateAdded) {
         this.resourceType = resourceType;
         this.grade = grade;
         this.subject = subject;
         this.fileId = fileId;
         this.fileName = fileName;
+        this.dateAdded = dateAdded;
     }
 
     public String getId() {
@@ -71,5 +72,13 @@ public class Library {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
     }
 }
