@@ -1,6 +1,7 @@
 package com.example.elmsbackend.controller;
 
 
+import com.example.elmsbackend.model.Notice;
 import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
 import com.example.elmsbackend.services.AdminUserService;
@@ -21,6 +22,7 @@ public class AdminUserController {
     @Autowired
     private AdminUserRepository adminUserRepository;
 
+
     public AdminUserController(AdminUserService adminUserService) {
         this.adminUserService = adminUserService;
     }
@@ -32,16 +34,29 @@ public class AdminUserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody User user){
+            adminUserService.updateUser(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
     @GetMapping("/alladmin")
     public ResponseEntity<List<User>> getAllAdminUsers(){
         return ResponseEntity.ok(adminUserService.getAllAdminUsers());
     }
 
-    @GetMapping("/getadminuser/{username}")
-    public Object getAdminUser(@PathVariable String username){
-        System.out.println("admin name :"+username);
-        return ResponseEntity.ok(adminUserService.getAdminByUsername(username));
+    @GetMapping("/getadminuser/{indexno}")
+    public Object getAdminUser(@PathVariable String indexno){
+        System.out.println("user indexno :"+indexno);
+        return ResponseEntity.ok(adminUserService.getAdminByUsername(indexno));
 
+    }
+
+    @GetMapping("/getuser/{role}")
+    public ResponseEntity<List<User>> filterUserByRole(@PathVariable String role) {
+        return new ResponseEntity<>(adminUserService.filterUserByRole(role), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteuser/{id}")

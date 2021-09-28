@@ -1,8 +1,13 @@
 package com.example.elmsbackend.services;
 
 
+import com.example.elmsbackend.model.Notice;
 import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +17,12 @@ import java.util.Optional;
 public class AdminUserService {
 
     private final AdminUserRepository adminUserRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public AdminUserService(AdminUserRepository adminUserRepository) {
+    @Autowired
+    public AdminUserService(AdminUserRepository adminUserRepository, MongoTemplate mongoTemplate) {
         this.adminUserRepository = adminUserRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     public void addAdminUser(User user){
@@ -31,8 +39,17 @@ public class AdminUserService {
         adminUserRepository.deleteById(id);
     }
 
-    public Optional<User> getAdminByUsername(String username){
-        return adminUserRepository.findById(username);
+    public List<User> filterUserByRole(String role) {
+        return mongoTemplate.find(Query.query(Criteria.where("role").is(role)), User.class);
+    }
+
+    public void updateUser(User user){
+        adminUserRepository.save(user);
+    }
+
+
+    public Optional<User> getAdminByUsername(String indexno){
+        return adminUserRepository.findById(indexno);
     }
 
 }

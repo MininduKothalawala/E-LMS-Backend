@@ -10,18 +10,18 @@ public class User {
     private String indexno;
     private String password;
     private String name;
-    private String mobileNo;
+    private String mobile_no;
     private String email;
     private String role;
 
     public User() {
     }
 
-    public User(String indexno, String password, String name, String mobileNo, String email, String role) {
+    public User(String indexno, String password, String name, String mobile_no, String email, String role) {
         this.indexno = indexno;
         this.password = password;
         this.name = name;
-        this.mobileNo = mobileNo;
+        this.mobile_no = mobile_no;
         this.email = email;
         this.role = role;
     }
@@ -50,12 +50,12 @@ public class User {
         this.name = name;
     }
 
-    public String getMobileNo() {
-        return mobileNo;
+    public String getMobile_no() {
+        return mobile_no;
     }
 
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
+    public void setMobile_no(String mobile_no) {
+        this.mobile_no = mobile_no;
     }
 
     public String getEmail() {
