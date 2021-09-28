@@ -18,6 +18,7 @@ public interface ClassroomRepository extends MongoRepository<Classroom, String> 
 
     List<Classroom> findByTopic (String topic);
 
-//    List<Classroom> findByAdded (String addedBy);
+
+    List<Classroom> findByAddedBy (String addedBy);
 
 }

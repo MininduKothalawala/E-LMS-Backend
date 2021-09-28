@@ -69,10 +69,10 @@ public class ClassroomController {
     }
 
     //
-//    @GetMapping("/getbyaddedBy/{addedBy}")
-//    public ResponseEntity<?> getClassroomByAddedBy(@PathVariable String addedBy) {
-//        return new ResponseEntity<>(classroomService.getClassroomByAddedBy(addedBy), HttpStatus.OK);
-//    }
+    @GetMapping("/getbyaddedBy/{addedBy}")
+    public ResponseEntity<?> getClassroomByAddedBy(@PathVariable String addedBy) {
+        return new ResponseEntity<>(classroomRepository.findByAddedBy(addedBy), HttpStatus.OK);
+    }
 
     @PutMapping("/")
     public ResponseEntity<?> updateClassroom(@RequestParam("id") String id, @RequestParam("grade") String grade, @RequestParam("subject") String subject, @RequestParam("topic") String topic,
