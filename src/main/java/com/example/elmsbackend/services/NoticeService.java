@@ -74,11 +74,19 @@ public class NoticeService {
     //create notice ID
     public String createNoticeId(){
         List<Notice> notices = getAllNotices();
-        Notice item = notices.stream().reduce((first, second) -> second).orElse(null);
-        String lastId = item.getNoticeId();
-        int lastIdNum = Integer.parseInt(lastId.substring(2));
-        int size = lastIdNum+1;
-        String noticeId = "NO" + size;
+        String noticeId;
+
+        if (notices.isEmpty()){
+            noticeId = "NO" + 1;
+        }
+        else {
+            Notice item = notices.stream().reduce((first, second) -> second).orElse(null);
+            String lastId = item.getNoticeId();
+            int lastIdNum = Integer.parseInt(lastId.substring(2));
+            int size = lastIdNum+1;
+            noticeId = "NO" + size;
+        }
+
         return noticeId;
     }
 }
