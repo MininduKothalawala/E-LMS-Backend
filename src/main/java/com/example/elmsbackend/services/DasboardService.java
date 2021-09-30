@@ -5,7 +5,6 @@ import com.example.elmsbackend.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -43,7 +42,6 @@ public class DasboardService {
     public int getNewNoticesCount(){
         List<Notice> notices = noticeRepository.findAll();
         int noticeCount = 0;
-        LocalDateTime enteredDate;
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDate localDate = LocalDate.now();
@@ -87,7 +85,9 @@ public class DasboardService {
     //User types array
     public int[] getUserTypes(){
         List<User> users = adminUserRepository.findAll();
-        int admin=0, teacher=0, student=0;
+        int admin=0;
+        int teacher=0;
+        int student=0;
         int[] userTypes = new int[3];
 
         for (User user : users){

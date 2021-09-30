@@ -46,7 +46,7 @@ public class NoticeService {
     //get Notices by grade
     public List<Notice> getNoticesByGrade(String grade){
         List<Notice> notices = getAllNotices();
-        List<Notice> finalList = new ArrayList<Notice>();
+        List<Notice> finalList = new ArrayList<>();
 
         for(Notice notice: notices){
             if (notice.getNoticeGrade().equals(grade)){
@@ -60,7 +60,7 @@ public class NoticeService {
     //get Notices By Subject
     public List<Notice> getNoticesBySubject(String subject){
         List<Notice> notices = getAllNotices();
-        List<Notice> finalList = new ArrayList<Notice>();
+        List<Notice> finalList = new ArrayList<>();
 
         for(Notice notice: notices){
             if (notice.getNoticeSubject().equals(subject)){

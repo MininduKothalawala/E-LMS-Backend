@@ -1,7 +1,5 @@
 package com.example.elmsbackend.services;
 
-
-import com.example.elmsbackend.model.Notice;
 import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,6 @@ public class AdminUserService {
 
     public List<User> getAllAdminUsers(){
         List <User> users = adminUserRepository.findAll();
-        System.out.println("admin user from db ::"+ users);
         return users;
     }
 
