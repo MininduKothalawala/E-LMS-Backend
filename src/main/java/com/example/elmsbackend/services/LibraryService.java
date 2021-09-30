@@ -153,14 +153,14 @@ public class LibraryService {
         //find file from DB
         GridFSFile gridFSFile = template.findOne(new Query(Criteria.where("_id").is(id)));
 
-        HashMap<String, String> template = new HashMap<>();
+        HashMap<String, String> templateHashMap = new HashMap<>();
 
         if (gridFSFile != null && gridFSFile.getMetadata() != null) {
-            template.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
-            template.put("filename", gridFSFile.getFilename());
+            templateHashMap.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
+            templateHashMap.put("filename", gridFSFile.getFilename());
         }
 
-        return template;
+        return templateHashMap;
     }
 
 }

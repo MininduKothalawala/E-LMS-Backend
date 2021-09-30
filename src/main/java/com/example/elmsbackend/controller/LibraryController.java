@@ -1,5 +1,6 @@
 package com.example.elmsbackend.controller;
 
+import com.example.elmsbackend.model.Library;
 import com.example.elmsbackend.repository.LibraryRepository;
 import com.example.elmsbackend.services.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -31,20 +34,20 @@ public class LibraryController {
 
     // add resource
     @PostMapping("/")
-    public ResponseEntity<?> addResource(@RequestParam("resourceType") String resourceType, @RequestParam("grade") String grade, @RequestParam("subject") String subject,
-                                         @RequestParam("file")MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Library> addResource(@RequestParam("resourceType") String resourceType, @RequestParam("grade") String grade, @RequestParam("subject") String subject,
+                                               @RequestParam("file")MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(service.addResource(resourceType, grade, subject, multipartFile));
     }
 
     // get all resources
     @GetMapping("/")
-    public ResponseEntity<?> getAllLibraries() {
+    public ResponseEntity<List<Library>> getAllLibraries() {
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
 
     // get a resource
     @GetMapping("/{id}")
-    public ResponseEntity<?> getLibrary(@PathVariable String id) {
+    public ResponseEntity<Optional<Library>> getLibrary(@PathVariable String id) {
         return new ResponseEntity<>(repository.findById(id), HttpStatus.OK);
     }
 
@@ -63,32 +66,32 @@ public class LibraryController {
 
     // update a resource
     @PutMapping("/edit")
-    public ResponseEntity<?> updateResource(@RequestParam("id") String id, @RequestParam("resourceType") String resourceType, @RequestParam("grade") String grade, @RequestParam("subject") String subject,
+    public ResponseEntity<Library> updateResource(@RequestParam("id") String id, @RequestParam("resourceType") String resourceType, @RequestParam("grade") String grade, @RequestParam("subject") String subject,
                                          @RequestParam("file")MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(service.updateResource(id, resourceType, grade, subject, multipartFile));
     }
 
     //delete a resource
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteResource(@PathVariable String id) {
+    public ResponseEntity<String> deleteResource(@PathVariable String id) {
         return ResponseEntity.ok(service.deleteResource(id));
     }
 
     //filter resource by type
     @GetMapping("/filter/{type}")
-    public ResponseEntity<?> getFilteredLibraries(@PathVariable String type) {
+    public ResponseEntity<List<Library>> getFilteredLibraries(@PathVariable String type) {
         return new ResponseEntity<>(repository.findLibraryByResourceType(type), HttpStatus.OK);
     }
 
     //filter resource by subject according to grade
     @GetMapping("/filter/lib/{grade}/{subject}")
-    public ResponseEntity<?> filterLibrariesBySubject(@PathVariable String grade, @PathVariable String subject) {
+    public ResponseEntity<List<Library>> filterLibrariesBySubject(@PathVariable String grade, @PathVariable String subject) {
         return new ResponseEntity<>(repository.findLibraryByGradeAndSubject(grade, subject), HttpStatus.OK);
     }
 
     //search resource
     @GetMapping("/search/{text}")
-    public ResponseEntity<?> getSearchedLibraries(@PathVariable String text) {
+    public ResponseEntity<List<Library>> getSearchedLibraries(@PathVariable String text) {
         return new ResponseEntity<>(repository.findLibraryResource(text), HttpStatus.OK);
     }
 

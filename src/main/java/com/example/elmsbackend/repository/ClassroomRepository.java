@@ -1,14 +1,11 @@
 package com.example.elmsbackend.repository;
 
 import com.example.elmsbackend.model.Classroom;
-import com.example.elmsbackend.model.Library;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
 public interface ClassroomRepository extends MongoRepository<Classroom, String> {
-
-   // Classroom findClassroomById(String id);
 
     Classroom findClassroomById(String id);
 
@@ -17,7 +14,6 @@ public interface ClassroomRepository extends MongoRepository<Classroom, String> 
     List<Classroom> findBySubject (String subject);
 
     List<Classroom> findByTopic (String topic);
-
 
     List<Classroom> findByAddedBy (String addedBy);
 

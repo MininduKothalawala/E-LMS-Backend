@@ -1,7 +1,5 @@
 package com.example.elmsbackend.controller;
 
-
-import com.example.elmsbackend.model.Notice;
 import com.example.elmsbackend.model.User;
 import com.example.elmsbackend.repository.AdminUserRepository;
 import com.example.elmsbackend.services.AdminUserService;
@@ -28,19 +26,16 @@ public class AdminUserController {
     }
 
     @PostMapping("/addadminuser")
-    public ResponseEntity<?> addAdminUser(@RequestBody User user){
-        System.out.println("adduser"+ user.getName());
+    public ResponseEntity<User> addAdminUser(@RequestBody User user){
         adminUserService.addAdminUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody User user){
+    public ResponseEntity<User> updateUser(@RequestBody User user){
             adminUserService.updateUser(user);
             return new ResponseEntity<>(HttpStatus.OK);
-
     }
-
 
     @GetMapping("/alladmin")
     public ResponseEntity<List<User>> getAllAdminUsers(){
@@ -49,7 +44,6 @@ public class AdminUserController {
 
     @GetMapping("/getadminuser/{indexno}")
     public Object getAdminUser(@PathVariable String indexno){
-        System.out.println("user indexno :"+indexno);
         return ResponseEntity.ok(adminUserService.getAdminByUsername(indexno));
 
     }

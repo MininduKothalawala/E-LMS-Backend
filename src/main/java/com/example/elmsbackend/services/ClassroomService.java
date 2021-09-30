@@ -5,7 +5,6 @@ import com.example.elmsbackend.repository.ClassroomRepository;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
@@ -23,71 +22,16 @@ public class ClassroomService {
 
     private final ClassroomRepository classroomRepository;
 
-    private final MongoTemplate mongoTemplate;
-
     private final GridFsTemplate gridFsTemplate;
 
     private final GridFsOperations operations;
 
     @Autowired
-    public ClassroomService(ClassroomRepository classroomRepository, MongoTemplate mongoTemplate, GridFsTemplate gridFsTemplate, GridFsOperations operations) {
+    public ClassroomService(ClassroomRepository classroomRepository, GridFsTemplate gridFsTemplate, GridFsOperations operations) {
         this.classroomRepository = classroomRepository;
-        this.mongoTemplate = mongoTemplate;
         this.gridFsTemplate = gridFsTemplate;
         this.operations = operations;
     }
-
-
-
-
-//    public void addClassroom(String classID, String grade, String subject, String topic, String description, String date, String time, String link, String addedBy,
-//                             MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
-//
-//        //define metadata for the lec
-//        DBObject lecMetaData = new BasicDBObject();
-//        lecMetaData.put("addedBy", addedBy);
-//        lecMetaData.put("classID", classID);
-//
-//        //store file in GridFS
-//        Object lecFileId = gridFsTemplate.store(lecFile.getInputStream(), lecFile.getOriginalFilename(), lecFile.getContentType(), lecMetaData);
-//
-//        //define metadata for the lec
-//        DBObject tuteMetaData = new BasicDBObject();
-//        tuteMetaData.put("addedBy", addedBy);
-//        tuteMetaData.put("classID", classID);
-//
-//        //store file in GridFS
-//        Object tuteFileId = gridFsTemplate.store(tuteFile.getInputStream(), tuteFile.getOriginalFilename(), tuteFile.getContentType(), tuteMetaData);
-//
-//        //store preview image to DB
-//        DBObject imgMetaData = new BasicDBObject();
-//        imgMetaData.put("addedBy", addedBy);
-//        tuteMetaData.put("classID", classID);
-//        Object imgFileId = gridFsTemplate.store(classImg.getInputStream(), classImg.getOriginalFilename(), classImg.getContentType(), imgMetaData);
-//
-//        if (imgFileId != null) {
-//            Classroom classroom = new Classroom();
-//            classroom.setGrade(grade);
-//            classroom.setSubject(subject);
-//            classroom.setTopic(topic);
-//            classroom.setDescription(description);
-//            classroom.setDate(date);
-//            classroom.setTime(time);
-//            classroom.setLink(link);
-//            classroom.setAddedBy(addedBy);
-//            classroom.setLec_filename(lecFile.getOriginalFilename());
-//            classroom.setLec_fileId(lecFile.toString());
-//            classroom.setTute_filename(tuteFile.getOriginalFilename());
-//            classroom.setTute_fileId(tuteFile.toString());
-//            classroom.setImg_filename(classImg.getOriginalFilename());
-//            classroom.setImg_fileId(classImg.toString());
-//            //as the initial status
-//
-//            //store other data in the collection
-//            classroomRepository.insert(classroom);
-//        }
-//
-//    }
 
     public Classroom addClassroom(String grade, String subject, String topic, String description, String date, String time, String link, String addedBy,
                                   MultipartFile lecFile, MultipartFile tuteFile, MultipartFile classImg) throws IOException {
@@ -139,7 +83,9 @@ public class ClassroomService {
          * Find the existing record from the db
          */
         Classroom updatedClassroom = classroomRepository.findClassroomById(id);
-        String deletedLecId,deletedTuteId,deletedImgId;
+        String deletedLecId;
+        String deletedTuteId;
+        String deletedImgId;
 
         /*
          * If record exist, get the fileID and delete the file
@@ -252,11 +198,6 @@ public class ClassroomService {
     }
 
 
-
-//    public List<Classroom> getClassroomByAddedBy(String addedBy) {
-//        return classroomRepository.findByAdded(addedBy);
-//    }
-
     public Optional<Classroom> getClassroomById(String id){
         return classroomRepository.findById(id);
     }
@@ -285,7 +226,6 @@ public class ClassroomService {
         HashMap<String, String> lecture = new HashMap<>();
 
         if (gridFSFile != null && gridFSFile.getMetadata() != null) {
-            //template.put("contentType", gridFSFile.getMetadata().get("_contentType").toString());
             lecture.put("filename", gridFSFile.getFilename());
         }
 
@@ -362,7 +302,7 @@ public class ClassroomService {
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
         if (LecFileId != null && imgFileId != null && TutteFileId != null) {
-//            //if file is deleted then insert new file
+//            if file is deleted then insert new file
             List<String> idList = (List<String>) addClassroom(grade,subject,topic,description,date,time,link,addedBy,lecFile,tuteFile,classImg);
 
             classroom.setGrade(grade);

@@ -1,6 +1,5 @@
 package com.example.elmsbackend.controller;
 
-import com.example.elmsbackend.model.Notice;
 import com.example.elmsbackend.model.Subject;
 import com.example.elmsbackend.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
